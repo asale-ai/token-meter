@@ -1,0 +1,31 @@
+[package]
+name = "token-meter"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+description = "Cross-provider LLM token metering — Claude, OpenAI and Gemini prompt accounting behind one API, with every count carrying its own provenance"
+license = "Apache-2.0"
+repository = "https://github.com/asale-ai/token-meter"
+readme = "README.md"
+keywords = ["llm", "tokens", "tokenizer", "openai", "anthropic"]
+categories = ["api-bindings", "text-processing"]
+
+[lib]
+name = "token_meter"
+path = "src/lib.rs"
+
+[dependencies]
+# Tool schemas arrive as JSON and are serialized into the prompt by every
+# provider, so reading them is not optional.
+serde_json = "1"
+# Exact OpenAI-family counts. Optional because the BPE tables are megabytes and
+# a caller that only meters Claude traffic should not pay for them.
+tiktoken-rs = { version = "0.12", optional = true }
+
+[features]
+default = []
+# Exact counts for the GPT family via tiktoken (o200k_base / cl100k_base).
+openai-exact = ["dep:tiktoken-rs"]
+
+[package.metadata.docs.rs]
+all-features = true
