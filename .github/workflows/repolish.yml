@@ -1,0 +1,37 @@
+name: repolish
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly: activity and link rot get worse on their own, with no commits involved
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Must be 0: the default fetch-depth of 1 brings down no tags at all,
+          # which leaves release-hygiene unable to judge the release cadence
+          fetch-depth: 0
+
+      # remote and badge are on by default, so they need no declaration here
+      # The score is recorded, not enforced. To gate on it, add a `with:` block
+      # holding `min-score: 60`.
+      - uses: asale-ai/repolish@v0.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit badge
+        run: |
+          git config user.name  github-actions
+          git config user.email github-actions@github.com
+          git add .repolish/badge.json
+          git diff --staged --quiet || git commit -m "chore: update repolish score"
+          git push
