@@ -2,6 +2,8 @@
 
 [English](README.md) | 简体中文
 
+[![repolish](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/asale-ai/token-meter/main/.repolish/badge.json)](https://github.com/asale-ai/repolish)
+
 跨厂商的 LLM token 计量与费用核算库,Rust 实现,覆盖 **Claude**、**GPT 系列**
 和 **Gemini**。
 

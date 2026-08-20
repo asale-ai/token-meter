@@ -2,6 +2,8 @@
 
 English | [简体中文](README.zh-CN.md)
 
+[![repolish](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/asale-ai/token-meter/main/.repolish/badge.json)](https://github.com/asale-ai/repolish)
+
 Cross-provider LLM token metering and cost accounting for Rust, covering
 **Claude**, the **GPT family** and **Gemini**.
 
