@@ -1,6 +1,6 @@
 [package]
 name = "token-meter"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.80"
 description = "Cross-provider LLM token metering — Claude, OpenAI and Gemini prompt accounting behind one API, with every count carrying its own provenance"
