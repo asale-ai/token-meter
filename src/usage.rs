@@ -173,16 +173,32 @@ impl Usage {
             return;
         }
 
-        // Both halves must come from this same object. Taking the total from one
+        // Every share must come from this same object. Taking the total from one
         // frame and the cached share from another bills the cached tokens in
         // full on whichever frame omits the detail.
-        let cached = ["prompt_tokens_details", "input_tokens_details"]
-            .iter()
-            .find_map(|k| u.get(k).and_then(|d| d.get("cached_tokens")).and_then(Value::as_i64))
-            .unwrap_or(0)
-            .max(0);
-        self.input = (prompt - cached).max(0);
+        let detail = |k: &str| {
+            ["prompt_tokens_details", "input_tokens_details"]
+                .iter()
+                .find_map(|d| u.get(d).and_then(|d| d.get(k)).and_then(Value::as_i64))
+                .map(|n| n.max(0))
+        };
+        let cached = detail("cached_tokens").unwrap_or(0);
+        // The *write* share, where the host breaks it out. An OpenAI-compatible
+        // proxy in front of Anthropic reports it — OpenRouter as
+        // `cache_write_tokens`, the aggregators as `cached_creation_tokens` —
+        // and, like `cached_tokens`, it is part of the prompt total rather than
+        // an addition to it. Anthropic bills a write at 1.25x the input rate, so
+        // leaving it inside `input` (which is where it landed until 2026-08-25)
+        // hands the publisher a bill nothing on the buyer's side pays for.
+        // Hosts that do not break it out are unaffected: absent means absent,
+        // not zero, so an Anthropic frame's own `cache_creation_input_tokens`
+        // read above still stands.
+        let created = ["cache_write_tokens", "cached_creation_tokens"].iter().filter_map(|k| detail(k)).max();
+        self.input = (prompt - cached - created.unwrap_or(0)).max(0);
         self.cache_read = cached;
+        if let Some(w) = created {
+            self.cache_write = w;
+        }
     }
 
     /// Merge a Gemini `usageMetadata` object.
@@ -263,6 +279,50 @@ mod tests {
         }));
         assert_eq!(u.input, 500);
         assert_eq!(u.cache_read, 0);
+    }
+
+    /// An OpenAI-compatible proxy in front of Anthropic reports the cache
+    /// *write* alongside the read, inside the prompt total. Both spellings seen
+    /// in production are read; the figures are the real ones from a 2026-08-25
+    /// probe of OpenRouter (`cache_write_tokens`) and of an aggregator
+    /// (`cached_creation_tokens`).
+    #[test]
+    fn an_openai_frame_breaks_out_the_cache_write_too() {
+        let openrouter = Usage::from_response(&json!({
+            "usage": {
+                "prompt_tokens": 3_610,
+                "completion_tokens": 16,
+                "prompt_tokens_details": {"cached_tokens": 0, "cache_write_tokens": 3_602}
+            }
+        }));
+        assert_eq!(openrouter.input, 8, "3610 total − 3602 written");
+        assert_eq!(openrouter.cache_write, 3_602);
+        assert_eq!(openrouter.prompt_total(), 3_610, "and the total is preserved exactly");
+
+        let aggregator = Usage::from_response(&json!({
+            "usage": {
+                "prompt_tokens": 3_278,
+                "completion_tokens": 11,
+                "prompt_tokens_details": {"cached_tokens": 29, "cached_creation_tokens": 3_244}
+            }
+        }));
+        assert_eq!(aggregator.input, 5, "3278 total − 29 read − 3244 written");
+        assert_eq!(aggregator.cache_read, 29);
+        assert_eq!(aggregator.cache_write, 3_244);
+        assert_eq!(aggregator.prompt_total(), 3_278);
+    }
+
+    /// A host that does not break the write out leaves the field absent, and
+    /// absent is not zero: the Anthropic count read from the frame's own
+    /// `cache_creation_input_tokens` must survive an OpenAI-shaped merge.
+    #[test]
+    fn a_missing_write_share_does_not_erase_one_already_known() {
+        let mut u = Usage::default();
+        u.merge_object(&json!({"input_tokens": 10, "cache_creation_input_tokens": 700}));
+        u.merge_object(&json!({"prompt_tokens": 1_000, "prompt_tokens_details": {"cached_tokens": 900}}));
+        assert_eq!(u.cache_write, 700, "the OpenAI-shaped frame said nothing about writes");
+        assert_eq!(u.input, 100);
+        assert_eq!(u.cache_read, 900);
     }
 
     /// A zero cached count must not make an Anthropic frame look like an OpenAI
