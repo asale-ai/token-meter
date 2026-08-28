@@ -1,16 +1,46 @@
 # token-meter
 
-[English](README.md) | 简体中文
+**跨厂商的 LLM token 计量与费用核算库,Rust 实现 —— Claude、GPT 系列和 Gemini
+用同一套 API 计数与计价,每个数字都带着自己的出处。**
 
+[![crates.io](https://img.shields.io/crates/v/token-meter.svg)](https://crates.io/crates/token-meter)
+[![docs.rs](https://img.shields.io/docsrs/token-meter)](https://docs.rs/token-meter)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](#许可)
 [![repolish](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/asale-ai/token-meter/main/.repolish/badge.json)](https://github.com/asale-ai/repolish)
 
-跨厂商的 LLM token 计量与费用核算库,Rust 实现,覆盖 **Claude**、**GPT 系列**
-和 **Gemini**。
+[English](README.md) | 简体中文
 
 发请求前先估算 prompt。拿到响应后读厂商真正计了多少。两者都能算成钱。然后把它们
 放在一起比对。
 
 每个计数都带着自己的出处,所以你永远知道手里拿的是实测值还是估算值。
+
+## 目录
+
+- [安装](#安装)
+- [快速开始](#快速开始)
+- [为什么每个计数都要带出处](#为什么每个计数都要带出处)
+- [能算什么](#能算什么)
+- [读取真实计费用量](#读取真实计费用量)
+- [计费](#计费)
+- [比对](#比对)
+- [不做什么](#不做什么)
+- [Features](#features)
+- [许可](#许可)
+
+## 安装
+
+```toml
+[dependencies]
+token-meter = "0.1"
+```
+
+需要 Rust 1.80 或更新的版本。默认构建除 `serde_json` 外没有别的依赖;GPT 系列的
+精确分词只差一个 feature,见 [Features](#features)。
+
+## 快速开始
+
+发请求前先把 prompt 数一遍,顺带看清这个数字是怎么来的:
 
 ```rust
 use token_meter::{Prompt, Message, Content, Source};
@@ -23,6 +53,8 @@ let count = Prompt::new("claude-sonnet-5")
 
 println!("{} tokens ({:?})", count.tokens, count.source);
 ```
+
+`count.source` 才是重点 —— 接着读[为什么每个计数都要带出处](#为什么每个计数都要带出处)。
 
 ## 为什么每个计数都要带出处
 

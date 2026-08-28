@@ -1,17 +1,49 @@
 # token-meter
 
-English | [简体中文](README.zh-CN.md)
+**Cross-provider LLM token metering and cost accounting for Rust — count and price a
+prompt for Claude, the GPT family and Gemini behind one API, with every number
+carrying its own provenance.**
 
+[![crates.io](https://img.shields.io/crates/v/token-meter.svg)](https://crates.io/crates/token-meter)
+[![docs.rs](https://img.shields.io/docsrs/token-meter)](https://docs.rs/token-meter)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](#license)
 [![repolish](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/asale-ai/token-meter/main/.repolish/badge.json)](https://github.com/asale-ai/repolish)
 
-Cross-provider LLM token metering and cost accounting for Rust, covering
-**Claude**, the **GPT family** and **Gemini**.
+English | [简体中文](README.zh-CN.md)
 
 Estimate a prompt before you send it. Read what the provider says it actually
 billed. Price either one. Hold them against each other.
 
 Every count carries its own provenance, so you always know whether you are
 holding a measurement or an estimate.
+
+## Contents
+
+- [Install](#install)
+- [Quick start](#quick-start)
+- [Why provenance](#why-provenance)
+- [What it counts](#what-it-counts)
+- [Reading what you were actually billed](#reading-what-you-were-actually-billed)
+- [Pricing](#pricing)
+- [Comparing](#comparing)
+- [What it will not do](#what-it-will-not-do)
+- [Features](#features)
+- [License](#license)
+
+## Install
+
+```toml
+[dependencies]
+token-meter = "0.1"
+```
+
+Requires Rust 1.80 or newer. The default build pulls in nothing beyond
+`serde_json`; exact GPT-family counts are one feature flag away, see
+[Features](#features).
+
+## Quick start
+
+Count a prompt before you send it, and see where the number came from:
 
 ```rust
 use token_meter::{Prompt, Message, Content, Source};
@@ -24,6 +56,8 @@ let count = Prompt::new("claude-sonnet-5")
 
 println!("{} tokens ({:?})", count.tokens, count.source);
 ```
+
+`count.source` is the whole point — read [Why provenance](#why-provenance) next.
 
 ## Why provenance
 
