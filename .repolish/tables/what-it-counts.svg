@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="361" viewBox="0 0 880 361" lang="en" role="img" aria-label="What it counts — table">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7d56f4"/>
+      <stop offset="0.55" stop-color="#ff5fd1"/>
+      <stop offset="1" stop-color="#43e5d0"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .t { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Noto Sans Mono CJK SC", "Noto Sans Mono CJK JP", "Microsoft YaHei", "Hiragino Sans", "Yu Gothic", monospace; }
+  </style>
+  <rect x="0" y="0" width="880" height="361" rx="18.0" fill="#1a1a24"/>
+  <rect x="0.5" y="0.5" width="879" height="360" rx="17.5" fill="none" stroke="#35334a"/>
+  <text class="t" x="28" y="38" font-size="11" fill="#8b87a3" text-anchor="start" letter-spacing="1.4">WHAT IT COUNTS</text>
+  <text class="t" x="28" y="68" font-size="11" fill="#8b87a3" text-anchor="start" letter-spacing="1.4"></text>
+  <text class="t" x="212" y="68" font-size="11" fill="#8b87a3" text-anchor="start" letter-spacing="1.4">CLAUDE</text>
+  <text class="t" x="341" y="68" font-size="11" fill="#8b87a3" text-anchor="start" letter-spacing="1.4">GPT FAMILY</text>
+  <text class="t" x="743" y="68" font-size="11" fill="#8b87a3" text-anchor="start" letter-spacing="1.4">GEMINI</text>
+  <rect x="28" y="78" width="824" height="1" fill="#35334a"/>
+  <text class="t" x="28" y="102" font-size="13" fill="#edebfa" text-anchor="start">Text</text>
+  <text class="t" x="212" y="102" font-size="13" fill="#edebfa" text-anchor="start">heuristic</text>
+  <text class="t" x="341" y="102" font-size="13" fill="#edebfa" text-anchor="start">exact (openai-exact)</text>
+  <text class="t" x="743" y="102" font-size="13" fill="#edebfa" text-anchor="start">heuristic</text>
+  <rect x="20" y="113" width="840" height="35" rx="5.0" fill="#222130"/>
+  <text class="t" x="28" y="137" font-size="13" fill="#edebfa" text-anchor="start">Tool definitions</text>
+  <text class="t" x="212" y="137" font-size="13" fill="#edebfa" text-anchor="start">JSON estimate</text>
+  <text class="t" x="341" y="137" font-size="13" fill="#edebfa" text-anchor="start">TypeScript declaration</text>
+  <text class="t" x="743" y="137" font-size="13" fill="#edebfa" text-anchor="start">JSON estimate</text>
+  <text class="t" x="28" y="172" font-size="13" fill="#edebfa" text-anchor="start">Tool calls &amp; results</text>
+  <text class="t" x="212" y="172" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="341" y="172" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="743" y="172" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <rect x="20" y="183" width="840" height="35" rx="5.0" fill="#222130"/>
+  <text class="t" x="28" y="207" font-size="13" fill="#edebfa" text-anchor="start">Replayed thinking</text>
+  <text class="t" x="212" y="207" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="341" y="207" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="743" y="207" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="28" y="242" font-size="13" fill="#edebfa" text-anchor="start">Images</text>
+  <text class="t" x="212" y="242" font-size="13" fill="#edebfa" text-anchor="start">area ÷ 750</text>
+  <text class="t" x="341" y="242" font-size="13" fill="#edebfa" text-anchor="start">512px tiles</text>
+  <text class="t" x="743" y="242" font-size="13" fill="#edebfa" text-anchor="start">768px tiles</text>
+  <rect x="20" y="253" width="840" height="35" rx="5.0" fill="#222130"/>
+  <text class="t" x="28" y="277" font-size="13" fill="#edebfa" text-anchor="start">Documents</text>
+  <text class="t" x="212" y="277" font-size="13" fill="#edebfa" text-anchor="start">by size</text>
+  <text class="t" x="341" y="277" font-size="13" fill="#edebfa" text-anchor="start">by size</text>
+  <text class="t" x="743" y="277" font-size="13" fill="#edebfa" text-anchor="start">by size</text>
+  <text class="t" x="28" y="312" font-size="13" fill="#edebfa" text-anchor="start">Message framing</text>
+  <text class="t" x="212" y="312" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="341" y="312" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <text class="t" x="743" y="312" font-size="15" fill="#43e5d0" text-anchor="start" font-weight="700">✓</text>
+  <rect x="28" y="323" width="824" height="1" fill="#35334a"/>
+</svg>

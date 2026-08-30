@@ -75,6 +75,11 @@ if count.source.is_precise() {
 
 ## 能算什么
 
+<img src=".repolish/tables/zh-cn/t-40f707.svg" alt="能算什么" width="880">
+
+<details>
+<summary>能算什么（表格原文）</summary>
+
 | | Claude | GPT 系列 | Gemini |
 |---|---|---|---|
 | 文本 | 启发式 | **精确**(`openai-exact`) | 启发式 |
@@ -84,6 +89,8 @@ if count.source.is_precise() {
 | 图片 | 面积 ÷ 750 | 512px 分块 | 768px 分块 |
 | 文档 | 按体积 | 按体积 | 按体积 |
 | 消息框架开销 | ✓ | ✓ | ✓ |
+
+</details>
 
 **tool 定义不是按 JSON 算的。** GPT 系列会把你的 tool 列表改写成一段 TypeScript
 namespace 声明再送进模型,真正计费的是这段声明:
