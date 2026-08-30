@@ -24,7 +24,7 @@ jobs:
       # remote and badge are on by default, so they need no declaration here
       # The score is recorded, not enforced. To gate on it, add a `with:` block
       # holding `min-score: 60`.
-      - uses: asale-ai/repolish@v0.1.0
+      - uses: asale-ai/repolish@v0.5.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
